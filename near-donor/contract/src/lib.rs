@@ -7,66 +7,55 @@
  */
 
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
-use near_sdk::{log, near_bindgen};
-
-// Define the default message
-const DEFAULT_MESSAGE: &str = "Hello";
+use near_sdk::{log, near_bindgen, AccountId, Promise, env};
+use near_sdk::collections::LookupMap;
 
 // Define the contract structure
 #[near_bindgen]
-#[derive(BorshDeserialize, BorshSerialize)]
+#[derive(BorshDeserialize<string>, BorshS<string>erialize)]
 pub struct Contract {
-    message: String,
+    note: LookupMap<String, Vec<String>>
 }
 
 // Define the default, which automatically initializes the contract
 impl Default for Contract{
-    fn default() -> Self{
-        Self{message: DEFAULT_MESSAGE.to_string()}
-    }
+   fn default() -> Self {
+       Self { 
+            note:LookupMap::new::(b"note".to_vec())
+        }
+   }
 }
 
 // Implement the contract structure
 #[near_bindgen]
 impl Contract {
-    // Public method - returns the greeting saved, defaulting to DEFAULT_MESSAGE
-    pub fn get_greeting(&self) -> String {
-        return self.message.clone();
-    }
-
-    // Public method - accepts a greeting, such as "howdy", and records it
-    pub fn set_greeting(&mut self, message: String) {
-        // Use env::log to record logs permanently to the blockchain!
-        log!("Saving greeting {}", message);
-        self.message = message;
-    }
+ //state methods
+pub fn donate(&mut self, account_Id:AccountId, amount: uf64) {
+    Promise::new(account_id).transfer(amount as u128);
 }
 
-/*
- * The rest of this file holds the inline tests for the code above
- * Learn more about Rust tests: https://doc.rust-lang.org/book/ch11-01-writing-tests.html
- */
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub fn note (&mut self, note_text:String, amount:String) {
+    let account_id: AccountId = env::signer_account_id();
+    let user: Option<Vec<String>> = self.note.get(account_id);
 
-    #[test]
-    fn get_default_greeting() {
-        let contract = Contract::default();
-        // this test did not call set_greeting so should return the default "Hello" greeting
-        assert_eq!(
-            contract.get_greeting(),
-            "Hello".to_string()
-        );
-    }
+    if user {
+        let mut list =  match self.note.get(account_id) {
+            Some(var) => var;
+            None => vec![];            
+        };
 
-    #[test]
-    fn set_then_get_greeting() {
-        let mut contract = Contract::default();
-        contract.set_greeting("howdy".to_string());
-        assert_eq!(
-            contract.get_greeting(),
-            "howdy".to_string()
-        );
+        list.push(note_text + " || " +&amount + " NEAR.");
+        self.note.insert(&account_id, &list);
+    } else {
+        let list = vec![note_text + " || " +&amount + " NEAR."];
+        self.note.insert(&account_id, &list);
     }
+}
+ //view methods
+pub view_donations(self, user:String) -> Vec<String> {
+    match self.note.get(&user) {
+        Some(var) => var;
+        None => vec![]
+    }
+}
 }
