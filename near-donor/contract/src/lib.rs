@@ -7,12 +7,12 @@
  */
 
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
-use near_sdk::{log, near_bindgen, AccountId, Promise, env};
+use near_sdk::{near_bindgen, AccountId, Promise, env};
 use near_sdk::collections::LookupMap;
 
 // Define the contract structure
 #[near_bindgen]
-#[derive(BorshDeserialize<string>, BorshS<string>erialize)]
+#[derive(BorshDeserialize, BorshSerialize)]
 pub struct Contract {
     note: LookupMap<String, Vec<String>>
 }
@@ -21,7 +21,7 @@ pub struct Contract {
 impl Default for Contract{
    fn default() -> Self {
        Self { 
-            note:LookupMap::new::(b"note".to_vec())
+            note:LookupMap::new(b"note".to_vec())
         }
    }
 }
@@ -30,18 +30,18 @@ impl Default for Contract{
 #[near_bindgen]
 impl Contract {
  //state methods
-pub fn donate(&mut self, account_Id:AccountId, amount: uf64) {
+pub fn donate(&mut self, account_id:AccountId, amount: f64) {
     Promise::new(account_id).transfer(amount as u128);
 }
 
-pub fn note (&mut self, note_text:String, amount:String) {
-    let account_id: AccountId = env::signer_account_id();
-    let user: Option<Vec<String>> = self.note.get(account_id);
+pub fn donation_note (&mut self, note_text: String, amount: String) {
+    let account_id = env::signer_account_id().to_string();
+    let user = self.note.contains_key(&account_id);
 
     if user {
-        let mut list =  match self.note.get(account_id) {
-            Some(var) => var;
-            None => vec![];            
+        let mut list =  match self.note.get(&account_id) {
+            Some(var) => var,
+            None => vec![]          
         };
 
         list.push(note_text + " || " +&amount + " NEAR.");
@@ -52,9 +52,9 @@ pub fn note (&mut self, note_text:String, amount:String) {
     }
 }
  //view methods
-pub view_donations(self, user:String) -> Vec<String> {
+pub fn view_donations(self, user:String) -> Vec<String> {
     match self.note.get(&user) {
-        Some(var) => var;
+        Some(var) => var,
         None => vec![]
     }
 }
