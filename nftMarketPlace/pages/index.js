@@ -4,9 +4,9 @@ import web3 from "web3";
 import axios from "axios";
 import Web3Modal from "web3modal";
 
-import { nftmarketaddress } from "../config";
+import { nftmarketaddress, nftaddress } from "../config";
 
-// import NFT from "../artifacts/contracts/NFT.sol/NFT.json";
+import NFT from "../artifacts/contracts/NFT.sol/NFT.json";
 import Market from "../artifacts/contracts/NFTMarketplace.sol/NFTMarket.json";
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
   }, []);
   async function loadNFTs() {
     const provider = new ethers.providers.JsonRpcProvider();
-    // const tokenContract = new ethers.Contract(nftaddress, NFT.abi, provider);
+    const tokenContract = new ethers.Contract(nftaddress, NFT.abi, provider);
     const marketContract = new ethers.Contract(
       nftmarketaddress,
       Market.abi,
@@ -27,15 +27,15 @@ export default function Home() {
 
     const items = await Promise.all(
       data.map(async (i) => {
-        // const tokenUri = await tokenContract.tokenURI(i.tokenId);
-        // const meta = await axios.get(tokenUri);
+        const tokenUri = await tokenContract.tokenURI(i.tokenId);
+        const meta = await axios.get(tokenUri);
         let price = web3.utils.fromWei(i.price.toString(), "ether");
         let item = {
           price,
           tokenId: i.tokenId.toNumber(),
           seller: i.seller,
           owner: i.owner,
-          // image: meta.data.image,
+          image: meta.data.image,
         };
         return item;
       })

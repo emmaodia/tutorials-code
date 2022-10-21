@@ -5,11 +5,13 @@ import { useRouter } from "next/router";
 import Web3Modal from "web3modal";
 import web3 from "web3";
 
-const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
+// const client = ipfsHttpClient("http://localhost:5001/api/v0");
+// const client = ipfsHttpClient();
+const client = ipfsHttpClient({ url: "http://localhost:5001/api/v0" });
 
 import { nftaddress, nftmarketaddress } from "../config";
 
-// import NFT from "../artifacts/contracts/NFT.sol/NFT.json";
+import NFT from "../artifacts/contracts/NFT.sol/NFT.json";
 import Market from "../artifacts/contracts/NFTMarketplace.sol/NFTMarket.json";
 
 export default function Home() {
