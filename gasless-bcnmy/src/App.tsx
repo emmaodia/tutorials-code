@@ -1,6 +1,48 @@
 import "./App.css";
+import "@Biconomy/web3-auth/dist/src/style.css";
+import SocialLogin from "@biconomy/web3-auth";
+import { ChainId } from "@biconomy/core-types";
+import { ethers } from 'ethers'
+import { IBundler, Bundler } from '@biconomy/bundler'
+import { BiconomySmartAccountV2, DEFAULT_ENTRYPOINT_ADDRESS } from "@biconomy/account"
+import { IPaymaster, BiconomyPaymaster,} from '@biconomy/paymaster'
+import { useState, useEffect, useRef } from "react";
+import {
+  ECDSAOwnershipValidationModule,
+  DEFAULT_ECDSA_OWNERSHIP_MODULE,
+} from "@biconomy/modules";
+
 
 function App() {
+  const bundler: IBundler = new Bundler({
+bundlerUrl: "https://bundler.biconomy.io/api/v2/80001/nJPK7B3ru.dd7f7861-190d-41bd-af80-6877f74b8f44",
+    	chainId: ChainId.POLYGON_MUMBAI,
+    	entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS,
+});
+
+const paymaster: IPaymaster = new BiconomyPaymaster({
+paymasterUrl: "https://paymaster.biconomy.io/api/v1/80001/<Your-API-Key>",
+});
+
+const [smartAccount, setSmartAccount] = useState<any>(null);
+const [interval, enableInterval] = useState(false);
+const sdkRef = useRef<SocialLogin | null>(null);
+const [loading, setLoading] = useState<boolean>(false);
+const [provider, setProvider] = useState<any>(null);
+
+useEffect(() => {
+    let configureLogin: any;
+    if (interval) {
+        configureLogin = setInterval(() => {
+            if (!!sdkRef.current?.provider) {
+                setupSmartAccount();
+                clearInterval(configureLogin);
+            }
+        }, 1000);
+    }
+}, [interval]);
+
+
   return (
     <>
       <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
