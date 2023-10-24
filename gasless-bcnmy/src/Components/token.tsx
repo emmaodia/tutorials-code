@@ -10,7 +10,6 @@ interface Props {
 
 export const TokenContract: React.FC<Props> = ({ smartAccount, provider }) => {
 
-const [minted, setMinted] = useState<number>(0);
 const [amount, setAmount] = useState<number>(0);
 const [isLoading, setIsLoading] = useState<boolean>(false);
 
