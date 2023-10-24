@@ -12,6 +12,7 @@ import {
   DEFAULT_ECDSA_OWNERSHIP_MODULE,
 } from "@biconomy/modules";
 
+import { TokenContract } from "./Components/token"
 
 function App() {
   const bundler: IBundler = new Bundler({
@@ -68,18 +69,20 @@ async function setupSmartAccount() {
     });
 
     try {
-      let biconomySmartAccount = await BiconomySmartAccountV2.create({
+      const biconomySmartAccount = await BiconomySmartAccountV2.create({
         chainId: ChainId.POLYGON_MUMBAI,
         bundler: bundler, 
         entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS,
         defaultValidationModule: module,
         activeValidationModule: module
     })
+
+    
       console.log(`address: , ${await biconomySmartAccount.getAccountAddress()}`)
       
       console.log(`deployed: , ${await biconomySmartAccount.isAccountDeployed(biconomySmartAccount.accountAddress)}`)
 
-      setSmartAccount(biconomySmartAccount.accountAddress)
+      setSmartAccount(biconomySmartAccount)
       setLoading(false)
     } catch (err) {
         console.log("error setting up smart account... ", err);
@@ -104,6 +107,7 @@ useEffect(() => {
     if (interval) {
         configureLogin = setInterval(() => {
             if (!!sdkRef.current?.provider) {
+              
                 setupSmartAccount();
                 clearInterval(configureLogin);
             }
@@ -147,7 +151,7 @@ useEffect(() => {
                 href="#responsive-header"
                 className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
               >
-                {smartAccount}
+                {smartAccount.accountAddress}
               </a>
             </div>
             <div>
@@ -172,28 +176,10 @@ useEffect(() => {
               
         <div className={`grid gap-48 grid-cols-2 grid-rows-2 m-6`}>
           <div>
-               <div className="w- rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-teal-600 sm:max-w-md">
-                <input
-                  type="text"
-                  name="amount"
-                  id="amount"
-                  autoComplete="amount"
-                  // onChange={handleAmount}
-                  className="block border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-700 focus:ring-0 sm:text-sm sm:leading-6"
-                  placeholder="$"
-                />
-              </div>
+               {/*  */}
 
-              <div className="mt-6 gap-x-6">
-                <button
-                  type="submit"
-                  // onClick={mintTokens}
-                  className="mb-28 rounded-md w-40 bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
-                >
-                  Mint Token
-                </button>
-              </div>
-          
+<TokenContract smartAccount={smartAccount} provider={provider} />
+
               <div className="w- rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-teal-600 sm:max-w-md">
                 <input
                   type="text"
