@@ -220,9 +220,12 @@ useEffect(() => {
               <p className="mb-2 block text-lg font-medium leading-6 text-gray-900">
                 To test the DEMO, mint MTK Tokens
               </p>
+              <p className="mb-2 block text-sm font-medium leading-6 text-gray-900">
+                The MTK Token is 18 decimal places. 
+              </p>
               <p className="block text-sm font-medium leading-6 text-gray-900">
-                The MTK Token is 18 decimal places. This will also approve the
-                amount you wish to Tip.
+                Calling the Give Tip will also approve the amount you wish to
+                Tip.
               </p>
             </div>
           </div> 
