@@ -182,7 +182,7 @@ useEffect(() => {
           <div>
                {/*  */}
 
-<TokenContract smartAccount={smartAccount} provider={provider} />
+<TokenContract smartAccount={smartAccount} />
 <GiveTips smartAccount={smartAccount}  />
 
               

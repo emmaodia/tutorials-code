@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { BiconomySmartAccount} from "@biconomy/account"
 import {  IHybridPaymaster,SponsorUserOperationDto, PaymasterMode,} from '@biconomy/paymaster'
 import { ethers } from "ethers";
 
 interface Props {
   smartAccount: BiconomySmartAccount
-  provider: any
 }
 
-export const TokenContract: React.FC<Props> = ({ smartAccount, provider }) => {
+
+
+export const TokenContract: React.FC<Props> = ({ smartAccount }) => {
 
 const [amount, setAmount] = useState<number>(0);
-const [isLoading, setIsLoading] = useState<boolean>(false);
 
 const tokenAddress = "0x317E4C04C7fDf44fa72bC997AeCe1b691159F95F";
 
