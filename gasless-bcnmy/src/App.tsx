@@ -13,6 +13,7 @@ import {
 } from "@biconomy/modules";
 
 import { TokenContract } from "./Components/token"
+import { GiveTips } from "./Components/giveTips";
 
 const bundler: IBundler = new Bundler({
 bundlerUrl: "https://bundler.biconomy.io/api/v2/80001/nJPK7B3ru.dd7f7861-190d-41bd-af80-6877f74b8f44",
@@ -182,28 +183,9 @@ useEffect(() => {
                {/*  */}
 
 <TokenContract smartAccount={smartAccount} provider={provider} />
+<GiveTips smartAccount={smartAccount}  />
 
-              <div className="w- rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-teal-600 sm:max-w-md">
-                <input
-                  type="text"
-                  name="amount"
-                  id="amount"
-                  autoComplete="amount"
-                  // onChange={handleAmount}
-                  className="block border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-700 focus:ring-0 sm:text-sm sm:leading-6"
-                  placeholder="$"
-                />
-              </div>
-
-              <div className="mt-6 gap-x-6">
-                <button
-                  type="submit"
-                  // onClick={giveTips}
-                  className="rounded-md w-40 bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
-                >
-                  Give Tip
-                </button>
-              </div>
+              
             </div>
             <div>
               <p className="mb-2 block text-lg font-medium leading-6 text-gray-900">
