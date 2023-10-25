@@ -1,5 +1,5 @@
 import "./App.css";
-import "@Biconomy/web3-auth/dist/src/style.css";
+import "./BiconomyStyle.css";
 import SocialLogin from "@biconomy/web3-auth";
 import { ChainId } from "@biconomy/core-types";
 import { ethers } from 'ethers'
