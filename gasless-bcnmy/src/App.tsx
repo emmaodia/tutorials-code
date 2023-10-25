@@ -82,7 +82,7 @@ async function setupSmartAccount() {
     
       console.log(`address: , ${await biconomySmartAccount.getAccountAddress()}`)
       
-      console.log(`deployed: , ${await biconomySmartAccount.isAccountDeployed(biconomySmartAccount.accountAddress)}`)
+      console.log(`deployed: , ${await biconomySmartAccount.isAccountDeployed(biconomySmartAccount.accountAddress || '')}`)
 
       setSmartAccount(biconomySmartAccount)
       setLoading(false)
