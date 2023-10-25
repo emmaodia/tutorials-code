@@ -7,8 +7,6 @@ interface Props {
   smartAccount: BiconomySmartAccount
 }
 
-
-
 export const TokenContract: React.FC<Props> = ({ smartAccount }) => {
 
 const [amount, setAmount] = useState<number>(0);
@@ -98,6 +96,4 @@ try {
               </div>
               </>
     )
-
-
 };
