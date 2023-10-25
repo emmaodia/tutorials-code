@@ -25,7 +25,7 @@ export default defineConfig({
     build: {
     rollupOptions: {
       // https://rollupjs.org/configuration-options/
-      BiconomyCSS: "@Biconomy/web3-auth/dist/src/style.css"
+      preserveModules: "@Biconomy/web3-auth/dist/src/style.css"
     },
   },
 
