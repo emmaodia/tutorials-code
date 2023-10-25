@@ -7,7 +7,7 @@ interface Props {
   smartAccount: BiconomySmartAccount
   }
 
-  export const GiveTips: React.FC<Props> = ({ smartAccount, provider }) => {
+  export const GiveTips: React.FC<Props> = ({ smartAccount }) => {
     const [amount, setAmount] = useState<number>(0);
 
     const TokenContractAddress = "0x317E4C04C7fDf44fa72bC997AeCe1b691159F95F";
