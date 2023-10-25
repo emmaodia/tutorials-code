@@ -32,7 +32,6 @@ const [smartAccount, setSmartAccount] = useState<any>(null);
 const [interval, enableInterval] = useState(false);
 const sdkRef = useRef<SocialLogin | null>(null);
 const [loading, setLoading] = useState<boolean>(false);
-const [provider, setProvider] = useState<any>(null);
 
 async function login() {
     if (!sdkRef.current) {
@@ -64,8 +63,7 @@ async function setupSmartAccount() {
     const web3Provider = new ethers.providers.Web3Provider(
         sdkRef.current.provider
     );
-    setProvider(web3Provider);
-
+    
     const module = await ECDSAOwnershipValidationModule.create({
       signer: web3Provider.getSigner(),
       moduleAddress: DEFAULT_ECDSA_OWNERSHIP_MODULE,
