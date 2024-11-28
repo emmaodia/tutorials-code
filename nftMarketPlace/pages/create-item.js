@@ -1,18 +1,34 @@
 import { useState } from "react";
 import { ethers } from "ethers";
-import { create as ipfsHttpClient } from "ipfs-http-client";
+// import { create as ipfsClient } from "ipfs-http-client";
+import ipfsClient from "ipfs-http-client";
 import { useRouter } from "next/router";
 import Web3Modal from "web3modal";
 import web3 from "web3";
 
-// const client = ipfsHttpClient("http://localhost:5001/api/v0");
+// const client = ipfsClient("https://ipfs.infura.io:5001/api/v0");
 // const client = ipfsHttpClient();
-const client = ipfsHttpClient({ url: "http://localhost:5001/api/v0" });
+// const client = ipfsHttpClient({ url: "http://localhost:5001/api/v0" });
 
 import { nftaddress, nftmarketaddress } from "../config";
 
 import NFT from "../artifacts/contracts/NFT.sol/NFT.json";
 import Market from "../artifacts/contracts/NFTMarketplace.sol/NFTMarket.json";
+
+const projectId = "2GWxz5FVPBAEmFojYHCJ5npBkIB";
+const projectSecret = "5847b615a2c3b10d53785bfe8f9f2473";
+const auth =
+  "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
+
+const client = ipfsClient.create({
+  host: "ipfs.infura.io",
+  port: 5001,
+  apiPath: "/api/v0",
+  protocol: "https",
+  headers: {
+    authorization: auth,
+  },
+});
 
 export default function Home() {
   const [fileUrl, setFileUrl] = useState(null);
@@ -40,7 +56,7 @@ export default function Home() {
     let tokenId = value.toNumber();
     const price = web3.utils.toWei(formInput.price, "ether");
 
-    const listingPrice = web3.utils.toWei("0.1", "ether");
+    const listingPrice = web3.utils.toWei("0.0001", "ether");
 
     contract = new ethers.Contract(nftmarketaddress, Market.abi, signer);
     transaction = await contract.createMarketItem(nftaddress, tokenId, price, {
@@ -52,11 +68,12 @@ export default function Home() {
   }
   async function onChange(e) {
     const file = e.target.files[0];
+    console.log(file);
     try {
       const added = await client.add(file, {
         progress: (prog) => console.log(`received: ${prog}`),
       });
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      const url = `https://emma-nft-marketplace.infura-ipfs.io/ipfs/${added.path}`;
       setFileUrl(url);
     } catch (error) {
       console.log("Error uploading file: ", error);
@@ -73,7 +90,7 @@ export default function Home() {
     });
     try {
       const added = await client.add(data);
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      const url = `https://emma-nft-marketplace.infura-ipfs.io/ipfs/${added.path}`;
       createSale(url);
     } catch (error) {
       console.log("Error uploading file: ", error);
